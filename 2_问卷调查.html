@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>问卷调查</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const messages = ["一定要说真话哦", "……", "最喜欢你了^_^"];
+            let index = 0;
+
+            function showPopup() {
+                if (index < messages.length) {
+                    let popup = document.createElement("div");
+                    popup.textContent = messages[index];
+                    popup.style.position = "fixed";
+                    popup.style.left = "50%";
+                    popup.style.top = "50%";
+                    popup.style.transform = "translate(-50%, -50%)";
+                    popup.style.padding = "20px";
+                    popup.style.background = "rgba(255,255,255,0.95)";
+                    popup.style.border = "2px solid black";
+                    popup.style.borderRadius = "10px";
+                    popup.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
+                    popup.style.zIndex = "1000";
+                    popup.style.fontSize = "18px";
+                    popup.style.textAlign = "center";
+
+                    let button = document.createElement("button");
+                    button.textContent = "关闭";
+                    button.style.marginTop = "10px";
+                    button.onclick = function () {
+                        document.body.removeChild(popup);
+                        index++;
+                        showPopup();
+                    };
+
+                    popup.appendChild(document.createElement("br"));
+                    popup.appendChild(button);
+                    document.body.appendChild(popup);
+                }
+            }
+
+            showPopup();
+        });
+    </script>
+    <style>
+        :root {
+            --glow-color: #ff4d6d;
+        }
+
+        /* 新增抖动动画 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        .apocalypse-shake {
+            animation: shake 0.1s infinite;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f3e8ff 0%, #ecdfff 100%);
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        /* 其余原有样式保持不变... */
+        .container {
+            width: 400px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(208, 191, 255, 0.3);
+            position: relative;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+        }
+
+        button {
+            background: #d0bfff;
+            border-color: #b8a2eb;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                transparent 35%,
+                rgba(255,255,255,0.2) 50%,
+                transparent 65%
+            );
+            animation: btnGlow 2s infinite;
+        }
+
+        .apocalypse-mode {
+            background: radial-gradient(
+                circle at center,
+                #800000 0%,
+                #400000 60%,
+                #200000 100%
+            ) !important;
+        }
+
+        .deep-apocalypse-mode{
+            background: 
+                radial-gradient(circle at 20% 20%, #ff0000 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, #ff0000 0%, transparent 50%),
+                linear-gradient(45deg, #000000 0%, #400000 100%);
+        }
+
+        .blood-text {
+            position: absolute;
+            font-size: 16px;
+            color: var(--glow-color);
+            text-shadow: 0 0 15px var(--glow-color);
+            animation:
+                typing 2s steps(40) forwards,
+                flicker 0.15s infinite 2s,
+                float 3s infinite 2s;
+            white-space: nowrap;
+            overflow: hidden;
+            opacity: 0;
+            filter: blur(0.5px);
+        }
+
+        .blood-box {
+            position: absolute;
+            background: rgba(90, 0, 0, 0.7);
+            border: 2px solid var(--glow-color);
+            border-radius: 10px;
+            padding: 15px 25px;
+            color: var(--glow-color);
+            animation:
+                boxAppear 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+                boxCrack 2s infinite alternate;
+            box-shadow: 0 0 30px var(--glow-color);
+            transform-origin: center;
+            pointer-events: none;
+            backdrop-filter: blur(2px);
+        }
+
+        @keyframes typing {
+            0% { width: 0; opacity: 1; }
+            99% { opacity: 1; }
+            100% { width: 100%; opacity: 1; }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes boxAppear {
+            from { transform: scale(0) rotate(-15deg); opacity: 0; }
+            to { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        @keyframes boxCrack{
+            0% {transform: scale(1);}
+            100% {transform: scale(1.03); border-width: 4px;}
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes btnGlow {
+            from { transform: rotate(0deg) translateX(-50%); }
+            to { transform: rotate(360deg) translateX(-50%); }
+        }
+
+        .retry-text{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 24px;
+            text-shadow: 0 0 20px #ffffff;
+            opacity: 0;
+            animation: fadeInOut 3s forwards;
+        }
+
+        @keyframes fadeInOut{
+          0%, 100% { opacity: 0; }
+          20%, 80% { opacity: 1; }
+        }
+
+        .blood-rain {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .blood-drop {
+            position: absolute;
+            width: 3px;
+            height: 20px;
+            background: #ff4d6d;
+            animation: fall 1s linear infinite;
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(100vh); }
+        }
+
+        .blood-splatter {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            opacity: 0.8;
+            background: radial-gradient(circle, #ff4d6d 0%, transparent 70%);
+            animation: splatter 0.5s forwards;
+        }
+
+        @keyframes splatter {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="question"></div>
+        <input type="text" id="answer" autocomplete="off">
+        <button onclick="nextQuestion()" id="nextBtn">下一个</button>
+    </div>
+
+    <script>
+        const questions = [
+            "最喜欢的歌是什么?",
+            "最喜欢的食物是什么?",
+            "最喜欢的颜色是哪个?",
+            "最喜欢的季节是什么?",
+            "最喜欢的动物是什么?",
+            "最喜欢的人是谁?"
+        ];
+
+        let currentStep = 0;
+        let isApocalypse = false;
+        let retryCount = 0;
+
+        function nextQuestion() {
+            if (currentStep === questions.length - 1) {
+                checkFinalAnswer();
+                return;
+            }
+            currentStep++;
+            updateQuestion();
+        }
+
+        function checkFinalAnswer() {
+            const answer = document.getElementById('answer').value.trim().toLowerCase();
+            if (retryCount === 0 && answer.includes('自己')) {
+                triggerBloodEffect();
+            } else {
+                triggerDeeperApocalypse();
+            }
+        }
+
+        function triggerBloodEffect() {
+            isApocalypse = true;
+            document.body.classList.add('apocalypse-mode');
+            
+            // 添加页面抖动
+            document.body.classList.add('apocalypse-shake');
+            setTimeout(() => {
+                document.body.classList.remove('apocalypse-shake');
+            }, 3000);
+
+            const elements = document.querySelectorAll('button, input');
+            elements.forEach(el => {
+                el.disabled = true;
+                el.style.opacity = '0.5';
+            });
+
+            const container = document.querySelector('.container');
+            container.style.transform = 'scale(1.2) rotate(3deg)';
+            container.style.opacity = '0.8';
+            container.style.filter = 'blur(2px)';
+
+            const texts = ["为什么不填我", "要永远在一起啊", "看着我...只准看着我",
+                         "我一直注视着你", "拒绝是新型的告白对吧对吧", "为什么要逃呢",
+                         "我知道你喜欢我的 对吧", "好痛...但更痛的是心"];
+            const createEntity = () => {
+              if (!isApocalypse) return;
+
+                const text = document.createElement('div');
+                text.className = 'blood-text';
+                Object.assign(text.style, {
+                    left: `${Math.random() * 95}%`,
+                    top: `${Math.random() * 95}%`,
+                    fontSize: `${Math.random() * 10 + 14}px`,
+                    animationDelay: `${Math.random() * 2}s`
+                });
+                text.textContent = texts[Math.floor(Math.random()*texts.length)];
+                document.body.appendChild(text);
+
+                const box = document.createElement('div');
+                box.className = 'blood-box';
+                Object.assign(box.style, {
+                    left: `${Math.random() * 90}%`,
+                    top: `${Math.random() * 90}%`,
+                    width: `${Math.random() * 200 + 100}px`,
+                    transform: `rotate(${Math.random() * 15 - 7.5}deg)`
+                });
+                box.textContent = texts[Math.floor(Math.random()*texts.length)];
+                document.body.appendChild(box);
+
+                setTimeout(() => {
+                    text.style.opacity = '0';
+                    setTimeout(() => text.remove(), 2000);
+                }, 8000);
+            }
+            const intervalId = setInterval(createEntity, 300);
+            createEntity();
+
+            setTimeout(() => {
+                clearInterval(intervalId);
+                const retryText = document.createElement('div');
+                retryText.className = 'retry-text';
+                retryText.textContent = '再给你一次机会';
+                document.body.appendChild(retryText);
+
+                setTimeout(()=>{
+                  retryText.remove();
+                  document.body.classList.remove('apocalypse-mode');
+                  elements.forEach(el => {
+                    el.disabled = false;
+                    el.style.opacity = '1';
+                  });
+                  container.style = '';
+                  document.querySelectorAll('.blood-text, .blood-box').forEach(el => el.remove());
+                  retryCount++;
+                  updateQuestion();
+                  isApocalypse = false;
+                },3000);
+            }, 5000);
+        }
+
+        function triggerDeeperApocalypse(){
+            isApocalypse = true;
+            document.body.classList.add('deep-apocalypse-mode');
+            
+            // 添加页面抖动
+            document.body.classList.add('apocalypse-shake');
+            setTimeout(() => {
+                document.body.classList.remove('apocalypse-shake');
+            }, 3000);
+
+            // 创建血雨效果
+            const rainContainer = document.createElement('div');
+            rainContainer.className = 'blood-rain';
+            document.body.appendChild(rainContainer);
+
+            // 生成血雨
+            setInterval(() => {
+                const drop = document.createElement('div');
+                drop.className = 'blood-drop';
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+                rainContainer.appendChild(drop);
+                setTimeout(() => drop.remove(), 1000);
+            }, 50);
+
+            // 生成血迹飞溅
+            setInterval(() => {
+                const splatter = document.createElement('div');
+                splatter.className = 'blood-splatter';
+                splatter.style.left = `${Math.random() * 90}%`;
+                splatter.style.top = `${Math.random() * 90}%`;
+                document.body.appendChild(splatter);
+                setTimeout(() => splatter.remove(), 500);
+            }, 300);
+
+            // 移除所有可交互元素
+            document.querySelector('.container')?.remove();
+
+            const texts = ["哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+                         "我最愛你了....",
+                         "你以为你能逃得掉吗",
+                         "没用的...没用的...没用的...",
+                         "一切都已经太迟了",
+                         "只准喜歡我....",
+                         "我們註定是要在一起的",
+                         "爱你...你...爱...爱你..."];
+            const createEntity = () => {
+                if (!isApocalypse) return;
+                const text = document.createElement('div');
+                text.className = 'blood-text';
+                Object.assign(text.style, {
+                    left: `${Math.random() * 95}%`,
+                    top: `${Math.random() * 95}%`,
+                    fontSize: `${Math.random() * 16 + 18}px`,
+                    animationDelay: `${Math.random() * 2}s`
+                });
+                text.textContent = texts[Math.floor(Math.random()*texts.length)];
+                document.body.appendChild(text);
+
+                const box = document.createElement('div');
+                box.className = 'blood-box';
+                Object.assign(box.style, {
+                    left: `${Math.random() * 90}%`,
+                    top: `${Math.random() * 90}%`,
+                    width: `${Math.random() * 250 + 150}px`,
+                    transform: `rotate(${Math.random() * 30 - 15}deg)`
+                });
+                box.textContent = texts[Math.floor(Math.random()*texts.length)];
+                document.body.appendChild(box);
+
+                setTimeout(() => {
+                    text.style.opacity = '0';
+                    setTimeout(() => text.remove(), 2000);
+                }, 8000);
+          }
+
+          setInterval(createEntity, 200);
+        }
+
+        function updateQuestion() {
+            document.getElementById('question').textContent = questions[currentStep];
+            document.getElementById('answer').value = '';
+            document.getElementById('answer').focus();
+        }
+
+        updateQuestion();
+    </script>
+</body>
+</html>
